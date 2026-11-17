@@ -1,0 +1,232 @@
+{
+  "source": "L2C-0002 - Medication Reminding Roles, Safe Practices, and Reporting.docx",
+  "decisions": {
+    "preAssessmentScored": false,
+    "passMarkPercent": 80,
+    "passingRequired": true,
+    "downloads": "Placeholder text/link blocks; URLs added manually after the build.",
+    "demoVideos": "Multimedia placeholder blocks; replace with produced videos later.",
+    "themeAndCover": "Rise defaults until the style guide and cover image are supplied.",
+    "blockTemplates": "Native Rise blocks only; no saved Block Templates."
+  },
+  "course": {
+    "code": "L2C-0002",
+    "title": "Medication Reminding: Roles, Safe Practices, and Reporting",
+    "durationMinutes": 60,
+    "format": "Online",
+    "audience": "Home Service Worker",
+    "jurisdiction": "Illinois",
+    "level": "Beginner",
+    "clinicalCategory": "Non-medical",
+    "description": "This course is for Home Service Workers providing non-medical home care in Illinois. It emphasizes the importance of safely assisting clients with medication reminding in alignment with state guidelines. The course focuses on empowering caregivers to support clients while adhering to legal requirements and promoting dignity.",
+    "coverImage": null,
+    "theme": "default"
+  },
+  "lessons": [
+    {
+      "title": "Course overview",
+      "type": "blocks",
+      "minutes": 4,
+      "blocks": [
+        { "type": "Text", "source": "Purpose" },
+        { "type": "Text", "source": "Requirements to Be Met" },
+        { "type": "Text", "source": "Course Description" },
+        { "type": "Statement (note)", "source": "Disclaimer", "note": "Small print; retain verbatim including citation." },
+        { "type": "List (checkbox)", "source": "Learning Objectives", "note": "7 items." }
+      ]
+    },
+    {
+      "title": "Pre-assessment",
+      "type": "quiz",
+      "minutes": 5,
+      "unscored": true,
+      "blocks": [
+        { "type": "Knowledge Check (multiple choice)", "source": "Pre-Assessment Question 1", "answer": "D", "feedback": "Rationale" },
+        { "type": "Knowledge Check (true/false)", "source": "Pre-Assessment Question 2", "answer": "True", "feedback": "Rationale" }
+      ]
+    },
+    {
+      "title": "Module 1: Understanding Safe Medication Reminding",
+      "type": "blocks",
+      "minutes": 10,
+      "blocks": [
+        { "type": "Text", "source": "Module Objectives intro" },
+        { "type": "List (checkbox)", "source": "Module Objectives", "note": "3 items." },
+        { "type": "Flashcards", "source": "Key Terms", "note": "5 pairs." },
+        { "type": "Process", "source": "Recognizing Illinois Medication Reminding Guidelines", "note": "5 numbered steps." },
+        { "type": "List (bulleted)", "source": "Guidelines supporting bullets", "note": "3 items." },
+        { "type": "Statement (note)", "source": "During a visit (Jessica / Mr. Lee)" },
+        { "type": "Text", "source": "Importance of Proper Medication Storage" },
+        { "type": "List (checkbox)", "source": "Storage checks", "note": "3 numbered items converted." },
+        { "type": "Table", "source": "Check This / If Not, Do This", "note": "3 rows plus header." },
+        { "type": "Quote", "source": "What you might say (storage)" },
+        { "type": "Statement (note)", "source": "Example documentation (storage)" },
+        { "type": "Text", "source": "Client Preferences and Empowerment" },
+        { "type": "List (bulleted)", "source": "Preferences bullets", "note": "3 items." },
+        { "type": "Quote", "source": "What you might say (preferences)" },
+        { "type": "Statement (note)", "source": "Example documentation (preferences)" },
+        { "type": "Multimedia (placeholder)", "source": "Demo-Based Video: Understanding Safe Medication Reminding", "note": "Placeholder to replace with the produced video." },
+        { "type": "List (checkbox)", "source": "Safe Medication Reminding Checklist", "note": "4 items." },
+        { "type": "Text (download placeholder)", "source": "Download — Safe Medication Reminding Checklist", "note": "URL added manually later." },
+        { "type": "Statement (note)", "source": "Rapid Refresh Tip" },
+        { "type": "Text", "source": "Reflection Prompt" },
+        { "type": "Knowledge Check (multiple choice)", "source": "Knowledge Check Question 1", "answer": "D" },
+        { "type": "Knowledge Check (scenario multiple choice)", "source": "Knowledge Check Question 2 (scenario video)", "answer": "A", "note": "Scenario text used as the stem." }
+      ]
+    },
+    {
+      "title": "Module 2: Verifying Medication Containers",
+      "type": "blocks",
+      "minutes": 15,
+      "blocks": [
+        { "type": "List (checkbox)", "source": "Module Objectives", "note": "3 items." },
+        { "type": "Flashcards", "source": "Key Terms", "note": "4 pairs." },
+        { "type": "Text", "source": "Checking Containers for Proper Labels" },
+        { "type": "List (bulleted)", "source": "Label checks", "note": "3 items." },
+        { "type": "Process", "source": "Label inspection", "note": "4 steps." },
+        { "type": "Quote", "source": "What you might say (labels)" },
+        { "type": "Statement (note)", "source": "Example documentation (labels)" },
+        { "type": "Text", "source": "Ensuring Correct Day and Time Markings" },
+        { "type": "Process", "source": "Day/time verification", "note": "4 steps." },
+        { "type": "Statement (note)", "source": "During a visit (Maria / Mr. Lee)" },
+        { "type": "Table", "source": "What to Check / What to Do", "note": "3 rows plus header." },
+        { "type": "Text", "source": "Reporting Improperly Marked Containers" },
+        { "type": "Process", "source": "Reporting steps", "note": "4 steps." },
+        { "type": "Quote", "source": "What you might say (unclear compartment)" },
+        { "type": "Statement (note)", "source": "Example documentation (reported markings)" },
+        { "type": "Multimedia (placeholder)", "source": "Demo-Based Video: Verifying Medication Containers" },
+        { "type": "List (checkbox)", "source": "Medication Container Verification Checklist", "note": "4 items." },
+        { "type": "Text (download placeholder)", "source": "Download — Medication Container Verification Checklist" },
+        { "type": "Statement (note)", "source": "Rapid Refresh Tip" },
+        { "type": "Text", "source": "Reflection Prompt" },
+        { "type": "Knowledge Check (multiple choice)", "source": "Knowledge Check Question 1", "answer": "B" },
+        { "type": "Knowledge Check (scenario multiple choice)", "source": "Knowledge Check Question 2", "answer": "A" }
+      ]
+    },
+    {
+      "title": "Module 3: Effective Communication and Prompting Techniques",
+      "type": "blocks",
+      "minutes": 15,
+      "blocks": [
+        { "type": "List (checkbox)", "source": "Module Objectives", "note": "5 items." },
+        { "type": "Flashcards", "source": "Key Terms", "note": "5 pairs." },
+        { "type": "Text", "source": "Asking About Medication Intake" },
+        { "type": "Process", "source": "Intake questions", "note": "6 steps." },
+        { "type": "Statement (note)", "source": "During a visit (Maria / Mr. Johnson)" },
+        { "type": "List (bulleted)", "source": "Intake support", "note": "4 items." },
+        { "type": "Quote", "source": "What you might say (intake)" },
+        { "type": "Text", "source": "Providing Verbal Reminders" },
+        { "type": "Process", "source": "Reminder delivery", "note": "6 steps." },
+        { "type": "List (bulleted)", "source": "Reminder style", "note": "4 items." },
+        { "type": "Table", "source": "Situation / What to Remind", "note": "3 rows plus header." },
+        { "type": "Text", "source": "Adapting Language to Client Needs" },
+        { "type": "Process", "source": "Adaptation", "note": "5 steps." },
+        { "type": "List (bulleted)", "source": "Accessibility considerations", "note": "4 items." },
+        { "type": "Quote", "source": "What you might say (evening preferences)" },
+        { "type": "Statement (note)", "source": "Example documentation (evening reminder)" },
+        { "type": "List (checkbox)", "source": "Communication and Prompting Checklist", "note": "4 items." },
+        { "type": "Text (download placeholder)", "source": "Download — Communication and Prompting Checklist" },
+        { "type": "Statement (note)", "source": "Rapid Refresh Tip" },
+        { "type": "Text", "source": "Reflection Prompt" },
+        { "type": "Knowledge Check (multiple choice)", "source": "Knowledge Check Question 1", "answer": "B" },
+        { "type": "Knowledge Check (scenario multiple choice)", "source": "Knowledge Check Question 2", "answer": "D" }
+      ]
+    },
+    {
+      "title": "Module 4: Handling Medication Containers Safely",
+      "type": "blocks",
+      "minutes": 10,
+      "blocks": [
+        { "type": "List (checkbox)", "source": "Module Objectives", "note": "5 items." },
+        { "type": "Flashcards", "source": "Key Terms", "note": "4 pairs." },
+        { "type": "Text", "source": "Managing Containers with Care" },
+        { "type": "List (bulleted)", "source": "Container care", "note": "3 items." },
+        { "type": "Table", "source": "What to Check / What to Do", "note": "3 rows plus header." },
+        { "type": "Statement (note)", "source": "During a visit (Maria / Mr. Johnson storage)" },
+        { "type": "Text", "source": "Opening Containers for Clients" },
+        { "type": "Process", "source": "Opening safely", "note": "5 steps." },
+        { "type": "Quote", "source": "What you might say (opening container)" },
+        { "type": "Text", "source": "Ensuring Client Safety and Dignity" },
+        { "type": "List (bulleted)", "source": "Dignity practices", "note": "3 items." },
+        { "type": "Quote", "source": "What you might say (encouragement)" },
+        { "type": "Statement (note)", "source": "Example documentation (afternoon medication)" },
+        { "type": "Multimedia (placeholder)", "source": "Demo-Based Video: Handling Medication Containers Safely" },
+        { "type": "List (checkbox)", "source": "Medication Handling Checklist", "note": "4 items." },
+        { "type": "Text (download placeholder)", "source": "Download — Medication Handling Checklist" },
+        { "type": "Statement (note)", "source": "Rapid Refresh Tip" },
+        { "type": "Text", "source": "Reflection Prompt" },
+        { "type": "Knowledge Check (multiple choice)", "source": "Knowledge Check Question 1", "answer": "D" },
+        { "type": "Knowledge Check (scenario multiple choice)", "source": "Knowledge Check Question 2", "answer": "A" }
+      ]
+    },
+    {
+      "title": "Module 5: Documenting and Reporting Procedures",
+      "type": "blocks",
+      "minutes": 10,
+      "blocks": [
+        { "type": "List (checkbox)", "source": "Module Objectives", "note": "3 items." },
+        { "type": "Flashcards", "source": "Key Terms", "note": "4 pairs." },
+        { "type": "Text", "source": "Recording Medication Reminding Activities", "note": "Two paragraphs." },
+        { "type": "List (bulleted)", "source": "Documentation essentials", "note": "3 items." },
+        { "type": "Process", "source": "Recording steps", "note": "5 steps." },
+        { "type": "Statement (note)", "source": "Example documentation (Mrs. Johnson)" },
+        { "type": "Text", "source": "Identifying and Reporting Irregularities" },
+        { "type": "Table", "source": "Irregularity / What to Do", "note": "3 rows plus header." },
+        { "type": "Statement (note)", "source": "During a visit (Anna / Mr. Lee)" },
+        { "type": "Text", "source": "Communicating with Supervisors and Advocates" },
+        { "type": "Process", "source": "Reporting and communication", "note": "5 steps." },
+        { "type": "Quote", "source": "What you might say (to a supervisor)" },
+        { "type": "Multimedia (placeholder)", "source": "Demo-Based Video: Documenting and Reporting Procedures" },
+        { "type": "List (checkbox)", "source": "Medication Reminding Documentation Checklist", "note": "4 items." },
+        { "type": "Text (download placeholder)", "source": "Download — Medication Reminding Documentation Checklist" },
+        { "type": "Statement (note)", "source": "Rapid Refresh Tip" },
+        { "type": "Text", "source": "Reflection Prompt" },
+        { "type": "Knowledge Check (multiple choice)", "source": "Knowledge Check Question 1", "answer": "A" },
+        { "type": "Knowledge Check (scenario multiple choice)", "source": "Knowledge Check Question 2", "answer": "C" }
+      ]
+    },
+    {
+      "title": "End-of-Course Case Study",
+      "type": "blocks",
+      "minutes": 5,
+      "blocks": [
+        { "type": "Text", "source": "Supporting Clients with Safe Medication Reminding" },
+        { "type": "Text", "source": "Characters (Alex / Mr. Johnson)" },
+        { "type": "Scenario", "source": "Decision Points 1-3", "note": "Answers A, C, B; rationales as feedback." }
+      ]
+    },
+    {
+      "title": "Final Assessment",
+      "type": "quiz",
+      "minutes": 6,
+      "passMarkPercent": 80,
+      "passingRequired": true,
+      "blocks": [
+        { "type": "Knowledge Check (multiple choice)", "source": "Final Question 1", "answer": "C" },
+        { "type": "Knowledge Check (multiple choice)", "source": "Final Question 2", "answer": "C" },
+        { "type": "Knowledge Check (multiple choice)", "source": "Final Question 3", "answer": "A" },
+        { "type": "Knowledge Check (multiple choice)", "source": "Final Question 4", "answer": "D" },
+        { "type": "Knowledge Check (true/false)", "source": "Final Question 5", "answer": "True" },
+        { "type": "Knowledge Check (true/false)", "source": "Final Question 6", "answer": "True" },
+        { "type": "Knowledge Check (true/false)", "source": "Final Question 7", "answer": "False" },
+        { "type": "Knowledge Check (multiple choice, fill-in-blank wording)", "source": "Final Question 8", "answer": "A (assisting)" },
+        { "type": "Knowledge Check (multiple choice, fill-in-blank wording)", "source": "Final Question 9", "answer": "A (reported)" },
+        { "type": "Knowledge Check (multiple choice, fill-in-blank wording)", "source": "Final Question 10", "answer": "B (fosters)" }
+      ]
+    }
+  ],
+  "skipped": [
+    { "source": "Table of Contents", "reason": "Rise generates lesson navigation automatically." }
+  ],
+  "counts": {
+    "lessons": 9,
+    "blocks": 125,
+    "knowledgeChecks": 22,
+    "tables": 5,
+    "flashcardSets": 5,
+    "processBlocks": 8,
+    "multimediaPlaceholders": 5,
+    "downloadPlaceholders": 5,
+    "scenarioBlocks": 1
+  }
+}
