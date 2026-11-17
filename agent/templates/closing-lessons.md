@@ -27,6 +27,8 @@ Build these in every course. Wording comes from the supplied document; layout, b
 Exactly two items, no Continue:
 
 1. Text block, family `impact`, variant `d`: `Thank You!`
-2. One Custom block (canvas): celebratory images plus text layers `Congratulations` (heading), `on completing this course`, `You are on a great path.`
+2. Text block, family `impact`, variant `b`: the fixed lines `Congratulations` / `on completing this course` / `You are on a great path.`
+
+(The reference's celebratory celebration panel is a Mondrian custom block whose copy lives outside the course model, so it cannot be authored with new or fixed text through the API; the two text blocks above are the API-buildable equivalent and were used for L2C-0002.)
 
 Never reword this lesson; it is identical in every course.

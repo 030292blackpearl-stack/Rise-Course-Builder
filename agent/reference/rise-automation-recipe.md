@@ -1,54 +1,42 @@
-# Rise 360 automation recipe (verified in L2C-0002)
+# Rise 360 build recipe — API first, UI only as fallback
 
-Everything here was verified against the live course. Follow it literally; the UI fails silently otherwise.
+**Build through the authoring API.** Everything that used to need canvas clicks (adding blocks, extra choices, correct radios, feedback, Continue settings, lesson order) is a JSON field. See `rise-authoring-api.md` for endpoints, payloads and block shapes, and `agent/pipeline/` for the working scripts.
 
-## Golden rules
-1. **Work in short scripts.** Each Playwright call must finish well under the tool limit. Long scripts get cut mid-typing and lose text. Budget ~40 s of work per call, waits of 0.5–1.5 s (never 5 s+).
-2. **Never type by clicking first.** Text entry only works as `element.focus()` then `keyboard.insertText(text)`. `locator.click()` + `keyboard.type()` silently does nothing on Rise's editors.
-3. **Dismiss overlays before touching the canvas.** Two things silently swallow clicks:
-   - the "Introducing AI Avatars … Got it" promo modal (click **Got it**);
-   - the **Block library** panel, which covers the canvas — close it with the **×** at its top-left (or `Escape`).
-4. **Verify by reading text**, `document.body.innerText`, never by trusting a click.
+This file keeps only what the API cannot do, plus the UI knowledge worth retaining for those cases.
 
-## Routes
-- Outline: `https://rise.articulate.com/authoring/{courseId}`
-- Lesson editor: `https://rise.articulate.com/authoring/{courseId}/lesson/{lessonId}`
-- Existing lessons expose an `a[href*="/lesson/"]` in the outline; collect those hrefs to build an id map (Pre-Assessment, each Knowledge Check, Case Study, Final Assessment, Thank You).
-- Theme: `/theme`, `/theme/colors`, `/theme/fonts`, `/theme/headers`.
+## Session
 
-## Creating a lesson from an empty row
-1. Find the row's own "Add Content" button via bounding-box proximity to the row title.
-2. Real mouse click it (`mouse.move` → `mouse.click` at its centre).
-3. Wait ~1.5 s, then press **Enter** — the menu opens with `menuitem "Create blank lesson"` already focused, so Enter converts the row and opens the editor.
-   Clicking the visible "Lesson" text does not work; it hits the hover wrapper.
+Every turn: `preview_open` with `mode: "browser"` and no URL to resume the persistent tabs, then confirm a tab is on `https://rise.articulate.com/authoring/…`. If the browser is fresh, the Rise session is not authenticated and the API returns HTML login pages — sign-in is manual; ask the user.
 
-## Adding blocks
-1. In the lesson, click the **Block library** button.
-2. Quick palette: Text, List, Image, Video, Survey, Process, Flashcards, Continue.
-3. Click **Block library** again (or the × top-left) for the full library: Text, Statement, Quote, List, Image, Gallery, Multimedia, Interactive, Knowledge check, Survey, Chart, Divider, Block templates, Code, **Custom block (Beta)**.
-4. Knowledge check → **Multiple choice** (also Multiple response, Fill in the blank, Matching, Draw from Question Bank).
-5. Click the block name with an exact-text locator, then close the library panel.
+## Order of work that works
 
-## Editing block text
-- Editable regions are `[contenteditable="true"]`, in document order. In a Text block: [0] heading, [1] body. In a Knowledge Check: question, then each choice.
-- Replace: `focus()` → `Control+a` → `insertText`.
-- Append: `focus()` → `Control+End` → `insertText`. Pressing Enter creates a new paragraph **inside** the same field — it never creates a new choice.
+1. Read the Word document, author the content spec (verbatim), generate the payload.
+2. Create the whole new outline first; verify it; then delete the old rows.
+3. Create blocks lesson by lesson, chaining `previousBlockId`, ~6–8 lessons per call.
+4. Set quiz settings and the course description, then verify by reading the model back and diffing text.
 
-## Custom block templates (use these to match the reference)
-The account's Block library ships Learn2Care custom-block templates that already look like the reference:
-`Agent - Thank You`, `Agent - Case Study`, `Agent - MCQ Question`, `Agent - Scenario Question`, `Agent - True False Question`, `Agent - Knowledge Check`, `Agent - Why This Matters`.
-Insert them from **Block library → Custom block → Blank / template category** rather than building stock-block approximations. The Thank You and Case Study screens should come from these.
+Full procedure with the exact calls: `rise-authoring-api.md` → "The one-pass build".
 
-## Quiz (Final Assessment / Pre-Assessment) editor
-- Opening a quiz lesson shows a **Title Screen** preview and a `QUESTION ORDER` list of question cards.
-- Clicking a card's "Enter a question title here…" opens the question editor: `[contenteditable="true"]` [0] = question, [1..] = choices; plus **Multiple Choice** type switcher, **Add image or video**, **Add audio to question**, **Feedback → Any Response**, and **Correct / Incorrect → By Choice** radios.
-- **Add Question** appends another card.
-- Known gap: no automation-reachable control to add a third/fourth choice or to tick the Correct radio; Enter inside a choice does not create one. Do these by hand (see below) or find the control before promising a build.
+## Fallback: things the API does not cover
 
-## Manual controls to ask the user for when automation can't reach them
-- Knowledge Check / quiz: add extra choices, tick Correct, set Feedback, Settings (Require correct answer, Retries).
-- Continue block completion: **Content → Completion Type → Complete Block Directly Above**.
-- Media uploads (dropzone has no file input).
+### Custom blocks (mondrian)
+`type: "custom", family: "mondrian"` blocks keep their text in Articulate's Mondrian service (`blockumentId`), not in the course JSON. You can **place** an existing one by copying its JSON, but you cannot retype its copy. So:
+- Do not promise the reference's Download/Rapid Refresh/Thank-You canvas designs with new wording.
+- Build those components as text/list blocks from the document's exact wording and record the deviation in the report.
+- The account also has `Agent - Thank You`, `Agent - Case Study`, `Agent - MCQ Question`, `Agent - Scenario Question`, `Agent - True False Question`, `Agent - Knowledge Check` custom-block templates, usable only where their text already matches.
 
-## Session start
-Every turn: `preview_open` with `mode: "browser"` (no URL) to resume tabs, then find the tab whose URL contains `rise.articulate.com/authoring`.
+### Media upload
+The media modal's dropzone exposes no file input and fires no `filechooser`. Unless an upload route is found, images/videos must be added by hand; ship labelled placeholders (`[VIDEO PLACEHOLDER – …]`) and list them in the report.
+
+### Theme editor
+Reachable at `/authoring/{courseId}/theme` (`/theme/colors`, `/theme/fonts`, `/theme/headers`); the header's Theme button is hidden at narrow widths. Duplicating the reference course carries the theme over, which is usually the right move.
+
+## UI knowledge retained (only if a control must be driven by hand)
+
+- Text entry: `element.focus()` then `keyboard.insertText` — click-then-type silently does nothing in Rise's editors.
+- Overlays that swallow clicks: the "Introducing AI Avatars … Got it" modal, and the Block library panel (close with the × at its top-left, or Escape).
+- A block's own toolbar has the `button[aria-label="Content"]` drawer; scope the locator to that block element or you will edit the neighbouring block.
+- Continue blocks: Content → Completion Type → Complete Block Directly Above.
+- Outline rows expose a dots menu (Duplicate / Copy / Delete); verify the row before deleting.
+- Create a lesson from an empty row: hover the row, click its own "Add Content", then press Enter ("Create blank lesson" is auto-focused). Clicking the visible "Lesson" label hits the hover wrapper and does nothing.
+- Keep UI scripts under ~40 s; longer ones get cut mid-typing and lose text.

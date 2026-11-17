@@ -7,8 +7,11 @@ Everything the agent needs to build a Learn2Care course in Articulate Rise 360 f
 | Path | Purpose |
 | --- | --- |
 | `skill/SKILL.md` | The agent's instructions (the saved skill `rise-course-builder`). This is the source of truth for behaviour. |
-| `rules/agent-course-build-rules.md` | The full working spec with the verified Rise control map. |
+| `rules/agent-course-build-rules.md` | The full working spec with the verified Rise build route. |
+| `reference/rise-authoring-api.md` | **The build route:** `GET_COURSE` to read, `CREATE_BLOCKS` / `CREATE_LESSON` / `UPDATE_LESSON` / `DELETE_LESSON` to write, with payloads and block shapes. |
+| `reference/rise-automation-recipe.md` | Short recipe + the UI fallbacks for the few things the API cannot do. |
 | `reference/rise-reference-spec.md` | Block-level facts extracted from the reference course, including how to read it (`window.__fetchCourse()`). |
+| `pipeline/` | Working scripts: block factory, payload builder, verifier, and how to drive them. |
 | `templates/closing-lessons.md` | Reusable Case Study, Final Assessment and Thank You layouts. |
 | `content/` | Per-course extracted document text (e.g. `course-closing-content.md`). |
 
@@ -24,9 +27,15 @@ Everything the agent needs to build a Learn2Care course in Articulate Rise 360 f
 1. **Rise 360 authoring access** — a signed-in browser session on rise.articulate.com with permission to edit the target course. Login cannot be automated.
 2. **The target course shell** — an existing course with its sections/lessons per the document TOC, or permission for the agent to create them.
 3. **Reference course URL** — the published Review 360 delivery link used as the visual and behavioural model (Rule 0).
-4. **Custom block (canvas) availability** — the Download checklist, Rapid Refresh Tip and Thank You cards are Rise Custom blocks. If the plan/tenant does not expose them, the agent must flag the deviation rather than substitute a different look.
-5. **Manual media upload** — the Rise media modal's dropzone exposes no file input to automation. Images/videos must be attached by hand, or another upload route provided.
-6. **Publishing approval** — the agent never publishes, enrols learners, or changes library visibility without explicit approval.
+4. **A signed-in authoring session in the persistent browser** — the API is authorised by the Rise session cookie, so `npx convex login`-style automated sign-in is not possible; the user signs in once.
+5. **A target course shell** — an existing course (or a duplicate of the reference course, which carries the theme). Everything inside it is rebuilt through the API.
+6. **Manual media upload** — media has no upload endpoint; images/videos must be attached by hand, or placeholders shipped and listed.
+7. **Publishing approval** — the agent never publishes, enrols learners, or changes library visibility without explicit approval.
+
+## What the agent cannot do, and says so
+- Mondrian custom-block copy (the reference's Download/Rapid Refresh cards and Thank You canvas) cannot be retyped through the API — those become closest-match text blocks with the document's exact wording, reported as a deviation.
+- No images or videos are uploaded.
+
 
 ## Working agreement
 

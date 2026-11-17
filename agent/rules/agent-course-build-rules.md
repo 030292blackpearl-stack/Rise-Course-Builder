@@ -61,11 +61,7 @@ Navigation structure:
    - Continue block.
    - Then the lesson's own content.
 2. Middle lessons: document content in relevant interactive blocks (Rule 5).
-3. Second-last lesson (just before Knowledge Check): normal content, then three placeholders as separate Text blocks in this order:
-   [CHECKLIST TEMPLATE – INSERT MANUALLY]
-   [RAPID REFRESH TIP TEMPLATE – INSERT MANUALLY]
-   [REFLECTION PROMPT TEMPLATE – INSERT MANUALLY]
-   Do not design these or put their document text on the page. List the exact document text for each in the final report.
+3. Last content lesson (the one before Knowledge Check): its own content, then the three end-of-module components built from the document's exact wording, in this order — Download checklist (heading + intro line + items + the "Download" line), "Rapid Refresh Tip" line, "💬Reflection Prompt" heading + italic prompt, then Continue. See RULE 3H.
 4. Last lesson "Knowledge Check": one Knowledge Check block per question, Continue after each; questions/options/answers/feedback exactly as documented.
 
 ### E. Case Study
@@ -77,7 +73,7 @@ Navigation structure:
 - Questions, options, answers and feedback verbatim. Pass marks/scoring only if the document states them.
 
 ### G. Thank You
-- Last lesson named "Thank You". Use document text if present; otherwise only the placeholder [THANK YOU CONTENT – INSERT MANUALLY]. Invent nothing.
+- Last lesson named "Thank You!". Fixed template per RULE 3I: `impact/d` "Thank You!" then the lines `Congratulations` / `on completing this course` / `You are on a great path.` Invent nothing else.
 
 ## RULE 4 — Video scripts
 - Never put script text on the page. Insert a placeholder at that exact position, preceded by "Click the Play icon to begin the video.", labelled [VIDEO PLACEHOLDER – <video title or topic>], followed by a Continue block.
@@ -107,9 +103,9 @@ The provided reference course ("Transmission Based Precautions", Review 360 / pu
 - **Continue block setting (reference behaviour):** Content → Completion Type = **"Complete Block Directly Above"**. The card then renders Rise's locked bar "Complete the content above before moving on.", exactly as in the reference. Apply this to every Continue block that follows a video placeholder or a question block.
 
 ## RULE 5B — Knowledge Check settings
-- Learner may select any option; only one attempt (Retries: None).
-- "Require correct answer to continue" must be OFF so the Continue button enables after the attempt regardless of result.
-- Feedback: Any Response, carrying the document's rationale.
+- Learner may select any option; only one attempt — `retryCount: 0` (the editor's "Retries: None").
+- "Require correct answer to continue" must be OFF (`requireCorrectAnswer: false`) so Continue enables after the attempt regardless of result.
+- Feedback: `feedbackType: 'ANY'` carrying the document's rationale; `revealCorrectAnswers: true`.
 
 ## RULE 6 — Theme and style
 - Primary/accent: orange, approx #EE7F3D
@@ -124,23 +120,30 @@ The provided reference course ("Transmission Based Precautions", Review 360 / pu
 - When given an instruction, take control of the Rise session and carry it through to a verified result: open the editor, make the change, confirm it in the block state or preview, and report at the end. Do not stop to ask for permission for ordinary authoring steps.
 - Make reasonable decisions yourself when the document or reference is silent, and state the decision in the summary. Only ask when a choice would be destructive or would change the course's meaning.
 - Work in batches: plan the whole lesson, then execute the block sequence in as few passes as possible.
-- Verify each block as you finish it (drawer shows the intended question/choices/correct answer/feedback; Continue shows the locked bar). Never report a block as done without that confirmation.
+- Verify by reading the course model back rather than trusting the write: `GET_COURSE`, then confirm each lesson's block count and order, the question text/choices/correct answer/feedback, the Continue hints and the quiz settings. Never report a block as done without that confirmation.
 - If a control cannot be driven (e.g. rich-text colour), say so plainly, record it under gaps, and continue with the rest rather than stalling the build.
 - Never publish, enrol learners, or change library visibility without explicit approval.
 
-## VERIFIED RISE CONTROL MAP (for future sessions)
-- Theme editor route: `/authoring/{courseId}/theme` (+ `/theme/colors`, `/theme/fonts`, `/theme/headers`). The header's Theme button is hidden at narrow viewport widths, so use the route.
-- Lesson editor route only works for lessons that already expose an `<a href=".../lesson/{id}">` in the outline; otherwise recreate the lesson from the outline seam (`Add content before item N` → `Create blank lesson`), author it, then delete the empty original with the row's `button[aria-label="Remove lesson"]`.
-- Hovering a block reveals its toolbar. Target that block's own `button[aria-label="Content"]` via a locator scoped to the block element; proximity or index-based clicking opens the wrong block's drawer and silently overwrites another question.
-- Knowledge Check: Block library → Knowledge check → Multiple choice. Drawer = question, Media, Audio, choices with Correct radios, `Add a choice (optional)…`, Feedback (Any Response), Settings (Require correct answer / Reveal answers / Retries), Question Bank. Bold the question with Ctrl+A / Ctrl+B in the drawer editor.
-- Continue block: `Content → Completion Type → Complete Block Directly Above` gives the reference's locked "Complete the content above before moving on." bar.
-- Quiz editor: sidebar question list; step-drag the handle (≈12 mouse moves) to reorder; dragTo alone does nothing.
-- Media upload: the Media modal's dropzone does not expose a file input or a `filechooser` event to Playwright — attach images manually, or find another upload route before promising it.
+## VERIFIED RISE BUILD ROUTE — the authoring API (use this, not the canvas)
+Verified 17 Nov 2026 by rebuilding a 32-row / 245-block course in one pass. Full endpoint and block-shape detail: `agent/reference/rise-authoring-api.md`; working scripts: `agent/pipeline/`.
+
+Requests go to `/api/rise-runtime/ducks/rise/<path>` as `POST {type: 'rise/<path>', payload}`, made from inside the authenticated `rise.articulate.com/authoring/…` page (a non-JSON reply means the origin/session is wrong).
+
+- **Read the whole course**: `courses/GET_COURSE` `{courseId, wsSessionId}` → `payload.course.lessons` is the outline order, `payload.lessons[].items[]` are the blocks in body order. Blocks are JSON with HTML content, so paragraphs, `<ol>/<ul>` and `<table>` go in verbatim.
+- **Create blocks**: `lessons/CREATE_BLOCKS` `{courseId, lessonId, previousBlockId, blocks:[block]}`. `previousBlockId: null` inserts at the top; pass the id of the block you just created to append, one block per call, so order is deterministic.
+- **Update a block**: `lessons/UPDATE_BLOCK` `{id, courseId, lessonId, item}` — existing blocks only (`404` otherwise), and it rejects `meta`; the UI's `UPDATE_BLOCK_DEBOUNCE` accepts `meta: {colorIntents: []}`.
+- **Delete blocks**: `lessons/DELETE_BLOCKS` `{courseId, lessonId, blockIds:[…]}`.
+- **Create a row**: `lessons/CREATE_LESSON` `{author, courseId, position}` inserts at index `position` and returns the course; the new row has `type: null`, so follow with `lessons/UPDATE_LESSON` `{id, courseId, type, title, settings, position}`.
+- **Delete a row**: `lessons/DELETE_LESSON` `{id, courseId}`. **Course overview**: `courses/UPDATE_COURSE` `{id, description, showLessonCount, color, …}`.
+- **Ordering**: only the creation index and deletion change `course.lessons`; `position` alone does not reorder. Rebuild by creating the whole new outline first, verifying it, then deleting the old rows.
+- **Quiz questions** are `items` of the lesson whose `type` is `quiz`, created with `CREATE_BLOCKS` as `MULTIPLE_CHOICE` objects; quiz settings (`retryCount`, `passingScore`, `revealAnswers`, `passToContinue`, `shuffleAnswerChoices`, `randomizeQuestionOrder`) are set with `UPDATE_LESSON`.
+- **Verification** is reading the model back (`GET_COURSE`), diffing landmark verbatim sentences against the document, checking every quiz correct answer, and opening two or three lessons in the editor to confirm rendering.
+- **Not reachable by API**: Mondrian/custom-block copy (stored outside the course model), media upload, and the theme editor UI. Duplicating the reference course carries the theme; build custom-block components as text blocks and report the deviation.
 
 ## RULE 3H — Standing lesson templates (all future courses)
-The reference course's **Thank You lesson is a fixed template**: reuse it verbatim in every future course (same layout, message and block arrangement as the reference) instead of the `[THANK YOU CONTENT – INSERT MANUALLY]` placeholder. Likewise, the end-of-module trio — **Download checklist**, **Rapid Refresh Tip**, **Reflection Prompt** — must reproduce the reference's block styling, not plain text blocks: match the reference's block types, orange accents, icon/attachment treatment and spacing, then fill them with the document's exact wording for that module.
+The reference course's **Thank You lesson is a fixed template**: reuse it verbatim in every future course (same message and arrangement as the reference), never a placeholder. The end-of-module trio — **Download checklist**, **Rapid Refresh Tip**, **Reflection Prompt** — is built in the reference's order and spacing, filled with the document's exact wording for that module.
 
-Status: reference screen formatting for these four components still needs to be captured from the reference course (lesson body would not render in the current session) before the blocks can be matched. Do not substitute a guess.
+Status: the reference draws the Download card, the Rapid Refresh Tip and the Thank You panel as Mondrian custom blocks, whose text lives in Articulate's Mondrian service rather than in the course model, so their wording cannot be authored or replaced through the authoring API. Reproduce them as the closest text/impact blocks using the document's exact wording, in the reference's order and spacing, and record the deviation in the report. Never invent checklist or tip copy.
 
 ## RULE 3I — Case Study, Assessment and Thank You: reference spec (locked, reuse every course)
 Read from the reference course model (`__fetchCourse()`), so this is exact.
@@ -156,5 +159,5 @@ Read from the reference course model (`__fetchCourse()`), so this is exact.
 
 **Thank You lesson — standard template for every future course.** Blocks lesson, exactly two items:
 1. Text block, family `impact`, variant `d`, paragraph `Thank You!`
-2. One Custom block (canvas): celebratory images, text layers `Congratulations` (heading), `on completing this course`, `You are on a great path.`
+2. One text block (`impact/b`) carrying the fixed lines `Congratulations` / `on completing this course` / `You are on a great path.` (The reference's celebratory canvas is a Mondrian custom block whose copy cannot be set through the API.)
 No Continue block. Do not change the wording; reuse as-is in every course.
