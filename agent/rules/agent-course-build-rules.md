@@ -120,7 +120,7 @@ The provided reference course ("Transmission Based Precautions", Review 360 / pu
 - When given an instruction, take control of the Rise session and carry it through to a verified result: open the editor, make the change, confirm it in the block state or preview, and report at the end. Do not stop to ask for permission for ordinary authoring steps.
 - Make reasonable decisions yourself when the document or reference is silent, and state the decision in the summary. Only ask when a choice would be destructive or would change the course's meaning.
 - Work in batches: plan the whole lesson, then execute the block sequence in as few passes as possible.
-- Verify by reading the course model back rather than trusting the write: `GET_COURSE`, then confirm each lesson's block count and order, the question text/choices/correct answer/feedback, the Continue hints and the quiz settings. Never report a block as done without that confirmation.
+- Verify twice, never once. (a) **Validation gate:** every block must return `metadata.contentValidation.pass === true`; a single failing block makes its lesson load blank or show "Something went wrong" while the stored data still looks correct. (b) **Content:** `GET_COURSE`, then confirm each lesson's block count and order, the question text/choices/correct answer/feedback, the Continue hints and the quiz settings, and open several lessons to confirm rendering. Never report a block as done without those confirmations.
 - If a control cannot be driven (e.g. rich-text colour), say so plainly, record it under gaps, and continue with the rest rather than stalling the build.
 - Never publish, enrol learners, or change library visibility without explicit approval.
 

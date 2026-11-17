@@ -52,12 +52,43 @@ const BLOCKS = {
       background: {},
     };
   },
-  quote(html, caption) {
+  // Quote. IMPORTANT (verified): `items[0].avatar` must be present and point at an image that
+  // exists in the course, otherwise the block is stored with contentValidation.pass = false and
+  // the whole lesson then fails to load (blank page / "Something went wrong"). Same for
+  // `items[0].background`. `quoteAvatarKey` must be an asset of the target course — copy it from
+  // the duplicated reference course rather than inventing one.
+  quote(html, caption, quoteAvatarKey) {
+    const avatarKey = quoteAvatarKey || 'rise/courses/REPLACE_COURSE_ID/tAfGhP-Ud3_MtzxF.png';
     return {
       id: id('qt'), type: 'quote', family: 'quote', variant: 'a',
-      items: [{ id: id('qi'), paragraph: wrap(html), ...(caption ? { name: wrap(`<p><em>${caption}</em></p>`) } : {}) }],
+      items: [{
+        id: id('qi'),
+        name: caption ? wrap(`<p><em>${caption}</em></p>`) : '<div></div>',
+        avatar: {
+          media: {
+            image: {
+              key: avatarKey, type: 'image', crushedKey: avatarKey.replace(/([^/]+)$/, 'crushed-$1'),
+              dimensions: { originalWidth: 506, originalHeight: 506 }, isSkipCrush: false,
+              originalUrl: 'i-icon.png', sourcedFrom: 'USER', useCrushedKey: true,
+            },
+          },
+        },
+        paragraph: wrap(html),
+        background: {
+          media: {
+            image: {
+              key: 'assets/rise/assets/block-defaults/quote_background.jpg',
+              src: 'https://cdn.articulate.com/assets/rise/assets/block-defaults/quote_background.jpg',
+              type: 'image',
+              thumbnail: 'https://cdn.articulate.com/assets/rise/assets/block-defaults/quote_background_thumb.jpg',
+              dimensions: { originalWidth: 1680, originalHeight: 1680 },
+              originalUrl: 'quote_background.jpg', sourcedFrom: 'DEFAULT',
+            },
+          },
+        },
+      }],
       metadata: {},
-      settings: { v: 2, avatar: false, divider: false, paddingTop: 1, quoteWidth: 92, quotePadding: 2, quotesInline: true, audioPosition: 'bottom', paddingBottom: 1, paddingLinked: true, backgroundType: 'GRAY', backgroundColor: null, attachedToNextBlock: false, markerColorContrast: 'AUTO', snippetColorContrast: 'AUTO' },
+      settings: { v: 2, avatar: true, divider: false, paddingTop: 1, quoteWidth: 92, quotePadding: 2, quotesInline: true, audioPosition: 'bottom', paddingBottom: 1, paddingLinked: true, backgroundType: 'GRAY', backgroundColor: null, attachedToNextBlock: false, markerColorContrast: 'AUTO', snippetColorContrast: 'AUTO' },
       background: {},
     };
   },

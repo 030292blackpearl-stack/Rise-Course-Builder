@@ -149,9 +149,24 @@ Quiz settings (their own JSON on the lesson):
 9. **Verify**: re-`GET_COURSE`, write it to disk, and compare against landmark verbatim sentences from the document (see `agent/pipeline/verify.js`); confirm every quiz correct answer; confirm no text from an unrelated course survives.
 10. **Look at it**: open two or three lessons in the editor and confirm the blocks render (tables, lists, flashcards, locked Continue).
 
+## Validate every block — a failing block blanks its whole lesson
+Each block comes back from `CREATE_BLOCKS` / `UPDATE_BLOCK` with `metadata.contentValidation: { pass, version }`. If **any** block in a lesson has `pass: false`, the lesson editor shows "Something went wrong" and learners see a blank lesson. The data looks correct in `GET_COURSE`, so counting blocks is not enough.
+
+```js
+for (const id of p.course.lessons) {
+  for (const b of (p.lessons.find(l => l.id === id).items || [])) {
+    const cv = b.metadata && b.metadata.contentValidation;
+    if (!cv || cv.pass !== true) report(id, b.type, b.family);
+  }
+}
+```
+
+Run that gate after every write pass, and reopen a lesson or two to confirm rendering. Known cause so far: a `quote` block stored **without `items[0].avatar`** (and without its `items[0].background`) fails validation — set `settings.avatar: true` and keep both objects, pointing the avatar at an image that exists in the course. Always take block shapes from `lib-blocks.js` / the table above rather than hand-rolling them.
+
 ## Gotchas
 
 - A non-JSON response (`<!DOCTYPE html>`) means the page is not an authenticated `rise.articulate.com` authoring page — re-navigate and retry. Wrap `JSON.parse` in try/catch and surface the status.
+- A lesson that shows "Something went wrong" or opens blank is almost always a block stored with `contentValidation.pass: false` — run the validation gate above before blaming the lesson.
 - When detecting the newly created row, diff against the id list captured **before** the loop. `filter(x => !old.includes(x))[0]` returns the same row every iteration and silently leaves the rest untitled (this happened; 31 rows came out blank).
 - Keep each Playwright call to roughly one chunk of work; a whole course in one call can exceed the tool timeout mid-write.
 - Do not touch a lesson someone else is editing: Rise shows a "‹Person› is editing '…'" lock modal with **TAKE CONTROL**. Taking control is fine when the user owns the course, but say so in the report.

@@ -68,5 +68,5 @@ Full detail: `reference/rise-authoring-api.md`. Working scripts: `pipeline/`. Su
 4. Create the outline (`CREATE_LESSON` at `position = current length`, then `UPDATE_LESSON`), store the ids, verify the row list, then delete the old rows.
 5. Create the blocks lesson by lesson, chaining `previousBlockId`, ~6–8 lessons per tool call; fix any lesson that reports fewer blocks than expected.
 6. Set the quiz settings and the course description; check the theme.
-7. Verify: re-`GET_COURSE`, diff landmark sentences against the document, confirm every quiz correct answer, confirm no unrelated course text survives, then open two or three lessons to confirm rendering.
+7. Verify twice. First the **validation gate**: every block must come back with `metadata.contentValidation.pass === true` — one failing block makes its whole lesson load blank or show "Something went wrong", even though the data looks fine. Then content: re-`GET_COURSE`, diff landmark sentences against the document, confirm every quiz correct answer, confirm no unrelated course text survives, and open several lessons (including the last content lesson of each module, the Case Study and the Thank You) to confirm they render.
 8. Report: what was built and verified, where the API could not reproduce the reference (custom-block copy, media), and any decision made where the document was silent.
