@@ -68,3 +68,6 @@ Carry each instruction through to a verified result: open the editor, make the c
 3. Build section by section in the document's order; verify each block as you finish it.
 4. Add the fixed closing (Case Study, Assessment, Thank You).
 5. Report: what was built and verified, what could not be automated (with reasons), and any place where the document was ambiguous and you made a decision.
+
+## One-pass build procedure (verified)
+Before authoring anything, read `reference/rise-automation-recipe.md` in this skill's folder if it is present, or the project copy at `agent/reference/rise-automation-recipe.md`. It records the control behaviours that make a single-pass build possible: resume the browser tab, dismiss the AI Avatars modal and close the Block library panel, use `focus()` + `insertText` for all text entry (never click-then-type), create lessons with "Add Content" → Enter, and prefer the account's `Agent - *` custom block templates for Thank You and Case Study screens. Build section by section, verify each block by reading the page text, and record anything the UI will not let you reach rather than approximating it.
